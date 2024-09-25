@@ -4,6 +4,7 @@ import Header from "./components/Header"
 import { Counter } from "./features/counter/Counter"
 import { Quotes } from "./features/quotes/Quotes"
 import Home from "./features/home/Home"
+import Users from "./features/users/Users"
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/counter" element={<Counter />} />
           <Route path="/quotes" element={<Quotes />} />
+          <Route path="/users" element={<Users />} />
         </Routes>
       </main>
 
