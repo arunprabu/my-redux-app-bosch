@@ -1,6 +1,8 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
+// importing the Provider from react-redux 
 import { Provider } from "react-redux"
+
 import App from "./App"
 import { store } from "./app/store"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -12,11 +14,11 @@ if (container) {
   const root = createRoot(container)
 
   root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
       <Provider store={store}>
         <App />
       </Provider>
-    </React.StrictMode>,
+    // </React.StrictMode>,
   )
 } else {
   throw new Error(
