@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import type { RootState } from "../../app/store"
+import { createAppSlice } from "../../app/createAppSlice"
 
-interface User {
+export interface User {
   id?: number
   name: string
   email: string
@@ -48,8 +49,21 @@ export const fetchUsersAsync = createAsyncThunk<
   },
 )
 
+export const addUserAsync = createAsyncThunk(
+  "users/addUser",
+  async(user: any) => { // user is the form data coming from component
+    console.log("HITTING API FOR ADDING USER");
+    const response = await axios.post(
+      "https://jsonplaceholder.typicode.com/users",
+      user,
+    )
+
+    return response.data;
+  }
+)
+
 // using the createSlice function from redux toolkit -- I am creating a slice for the users feature
-export const usersSlice = createSlice({
+export const usersSlice = createAppSlice({
   name: "users",
   initialState: initialState,
   reducers: {
@@ -63,20 +77,35 @@ export const usersSlice = createSlice({
         console.log("HITTING pending")
         // state is store data for this feaure
         // console.log(state);
-        state.isLoading = true;
+        state.isLoading = true
       })
       .addCase(fetchUsersAsync.fulfilled, (state, action) => {
-        console.log("HITTING fulfilled");
+        console.log("HITTING fulfilled")
         // action will have the data from rest api
         state.isLoading = false
         state.usersList = action.payload
       })
-      // .addCase(fetchUsersAsync.rejected, (state, action) => {
-      //   console.log("HITTING rejected")
-      //   // action will have the error message
-      //   state.isLoading = false
-      //   state.isError = true
-      // })
+      .addCase(fetchUsersAsync.rejected, (state, action) => {
+        console.log("HITTING rejected")
+        // action will have the error message
+        state.isLoading = false
+        state.isError = true
+      })
+      .addCase(addUserAsync.pending, state => {
+        // state is store data for this feaure
+        console.log("HITTING pending of addUser")
+        state.isLoading = true
+      })
+      .addCase(addUserAsync.fulfilled, (state, action) => {
+        console.log("HITTING fulfilled of AddUser")
+        state.isLoading = false
+        state.usersList = [...state.usersList, action.payload]
+      })
+      .addCase(addUserAsync.rejected, (state, action) => {
+        console.log("HITTING rejected of AddUser")
+        state.isLoading = false
+        state.isError = true
+      })
   },
 })
 

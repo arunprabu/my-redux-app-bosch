@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import AddUser from "./AddUser"
+import type { User } from "./usersSlice";
 import { fetchUsersAsync } from "./usersSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import type { RootState } from "../../app/store"
@@ -40,7 +41,7 @@ const Users = () => {
         {/* is we get the usersList data */}
         {usersState.usersList.length > 0 && (
           <div className="row">
-            {usersState.usersList.map((user: any) => (
+            {usersState.usersList.map((user: User) => (
               <div className="col-md-4" key={user.id}>
                 <div className="card">
                   <div className="card-body">

@@ -1,7 +1,11 @@
 import type React from "react";
 import { useState } from "react";
+import { useAppDispatch } from "../../app/hooks";
+import { addUserAsync } from "./usersSlice";
 
 const AddUser: React.FC = () => {
+const dispatch = useAppDispatch();
+
   const [formData, setFormData] = useState<any>({
     name: "",
     email: "",
@@ -10,14 +14,16 @@ const AddUser: React.FC = () => {
 
   const handleAddUser = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(formData)
+    console.log(formData);
+
+    dispatch(addUserAsync(formData))
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setFormData((prevData: any) => ({
       ...prevData,
-      [name]: value,
+      [name]: value, // computed property name in object - es2017
     }))
   }
 
